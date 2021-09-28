@@ -1,12 +1,9 @@
-import { BaseEntity, Column, CreateDateColumn, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, PrimaryColumn } from 'typeorm';
 
 export class Log extends BaseEntity {
 
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column()
-  deviceId: number;
+  @PrimaryColumn()
+  macAddress: string;
 
   @Column()
   value: string;

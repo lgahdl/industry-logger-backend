@@ -1,1 +1,4 @@
-export class CreateDeviceDto {}
+export class CreateDeviceDto {
+  name: string;
+  macAddress: string;
+}

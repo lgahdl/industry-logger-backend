@@ -1,1 +1,4 @@
-export class CreateLogDto {}
+export class CreateLogDto {
+  macAddress: string;
+  value: string;
+}

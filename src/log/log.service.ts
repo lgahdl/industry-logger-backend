@@ -1,26 +1,30 @@
 import { Injectable } from '@nestjs/common';
 import { CreateLogDto } from './dto/create-log.dto';
 import { UpdateLogDto } from './dto/update-log.dto';
+import { Log } from './log.entity';
+import { LessThan } from 'typeorm';
 
 @Injectable()
 export class LogService {
-  create(createLogDto: CreateLogDto) {
-    return 'This action adds a new log';
+  async create(createLogDto: CreateLogDto) {
+    const log = this.mount(createLogDto);
+    const savedLog = await Log.save(log);
+    return this.findOne(savedLog.macAddress);
   }
 
-  findAll() {
-    return `This action returns all log`;
+  async findOne(macAddress: string) {
+    return Log.findOne({ where: { macAddress } });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} log`;
+  async remove(macAddress: string, limitDate: Date) {
+    const logs = await Log.find({ where: { createdAt: LessThan(limitDate), macAddress } });
+    await Log.remove(logs);
   }
 
-  update(id: number, updateLogDto: UpdateLogDto) {
-    return `This action updates a #${id} log`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} log`;
+  private mount(dto: CreateLogDto | UpdateLogDto): Log {
+    const log = new Log();
+    log.macAddress = dto?.macAddress;
+    log.value = dto?.value;
+    return log;
   }
 }
