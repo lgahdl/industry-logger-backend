@@ -1,0 +1,31 @@
+# cloudbuild.yaml
+steps:
+  # Build New Image
+  - name: "gcr.io/cloud-builders/docker"
+    args:
+      ["build", "-t", "gcr.io/${PROJECT_ID}/${REPO_NAME}${_REPO_SUFFIX}", "."]
+  # Push Image to Google Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/${PROJECT_ID}/${REPO_NAME}${_REPO_SUFFIX}"]
+  # Extra step to Deploy New Revision to Cloud Run
+  - name: "gcr.io/cloud-builders/gcloud"
+    args: [
+        "beta",
+        "run",
+        "deploy",
+        "${REPO_NAME}${_REPO_SUFFIX}",
+        "--image",
+        "gcr.io/${PROJECT_ID}/${REPO_NAME}${_REPO_SUFFIX}:latest",
+        "--region",
+        "us-central1",
+        "--allow-unauthenticated",
+        "--platform",
+        "managed",
+        "--set-env-vars",
+        "MYSQL_SOCKET=${_MYSQL_SOCKET},
+        MYSQL_USER=${_MYSQL_USER},
+        MYSQL_PASS=${_MYSQL_PASS},
+        MYSQL_DATABASE=${_MYSQL_DATABASE},
+        GCS_ASSETS_BUCKET=${_GCS_ASSETS_BUCKET}"
+      ]
+timeout: 3600s
