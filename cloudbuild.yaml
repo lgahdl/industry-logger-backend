@@ -15,7 +15,7 @@ steps:
         "deploy",
         "${REPO_NAME}${_REPO_SUFFIX}",
         "--image",
-        "gcr.io/${PROJECT_ID}/${REPO_NAME}/${REPO_NAME}${_REPO_SUFFIX}:latest",
+        "${_GCR_HOSTNAME}/${PROJECT_ID}/${REPO_NAME}/${REPO_NAME}${_REPO_SUFFIX}:latest",
         "--region",
         "us-central1",
         "--allow-unauthenticated",
