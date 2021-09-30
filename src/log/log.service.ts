@@ -9,15 +9,17 @@ export class LogService {
   async create(createLogDto: CreateLogDto) {
     const log = this.mount(createLogDto);
     const savedLog = await Log.save(log);
-    return this.findOne(savedLog.macAddress);
+    return this.findLast(savedLog.macAddress);
   }
 
-  async findOne(macAddress: string) {
+  async findLast(macAddress: string) {
     return Log.findOne({ where: { macAddress }, order: { createdAt: 'DESC' } });
   }
 
   async remove(macAddress: string, limitDate: Date) {
-    const logs = await Log.find({ where: { createdAt: LessThan(limitDate), macAddress } });
+    const logs = await Log.find({
+      where: { createdAt: LessThan(limitDate), macAddress },
+    });
     console.log(logs);
     await Log.remove(logs);
   }

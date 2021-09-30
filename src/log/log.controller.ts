@@ -12,9 +12,9 @@ export class LogController {
     return this.logService.create(createLogDto);
   }
 
-  @Get(':macAddress')
+  @Get(':macAddress/last')
   findOne(@Param('macAddress') macAddress: string) {
-    return this.logService.findOne(macAddress);
+    return this.logService.findLast(macAddress);
   }
 
   @Delete(':macAddress')
