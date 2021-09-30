@@ -3,10 +3,10 @@ steps:
   # Build New Image
   - name: "gcr.io/cloud-builders/docker"
     args:
-      ["build", "-t", "gcr.io/${PROJECT_ID}/${REPO_NAME}${_REPO_SUFFIX}", "."]
+      ["build", "-t", "${_GCR_HOSTNAME}/${PROJECT_ID}/${REPO_NAME}", "."]
   # Push Image to Google Container Registry
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/${PROJECT_ID}/${REPO_NAME}${_REPO_SUFFIX}"]
+    args: ["push", "${_GCR_HOSTNAME}/${PROJECT_ID}/${REPO_NAME}"]
   # Extra step to Deploy New Revision to Cloud Run
   - name: "gcr.io/cloud-builders/gcloud"
     args: [
@@ -15,7 +15,7 @@ steps:
         "deploy",
         "${REPO_NAME}${_REPO_SUFFIX}",
         "--image",
-        "${_GCR_HOSTNAME}/${PROJECT_ID}/${REPO_NAME}/${REPO_NAME}${_REPO_SUFFIX}:latest",
+        "${_GCR_HOSTNAME}/${PROJECT_ID}/${REPO_NAME}/${REPO_NAME}:latest",
         "--region",
         "us-central1",
         "--allow-unauthenticated",
