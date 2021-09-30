@@ -1,8 +1,18 @@
-import { BaseEntity, Column, CreateDateColumn, PrimaryColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
+@Entity()
 export class Log extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-  @PrimaryColumn()
+  @Column()
   macAddress: string;
 
   @Column()
@@ -10,5 +20,4 @@ export class Log extends BaseEntity {
 
   @CreateDateColumn()
   createdAt: Date;
-
 }

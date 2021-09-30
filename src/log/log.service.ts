@@ -13,11 +13,12 @@ export class LogService {
   }
 
   async findOne(macAddress: string) {
-    return Log.findOne({ where: { macAddress } });
+    return Log.findOne({ where: { macAddress }, order: { createdAt: 'DESC' } });
   }
 
   async remove(macAddress: string, limitDate: Date) {
     const logs = await Log.find({ where: { createdAt: LessThan(limitDate), macAddress } });
+    console.log(logs);
     await Log.remove(logs);
   }
 

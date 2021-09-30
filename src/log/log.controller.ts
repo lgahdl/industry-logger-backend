@@ -20,6 +20,6 @@ export class LogController {
   @Delete(':macAddress')
   remove(@Param('macAddress') macAddress: string, @Query() query) {
     const { limitDate } = query;
-    return this.logService.remove(macAddress, limitDate);
+    return this.logService.remove(macAddress, new Date(limitDate));
   }
 }
