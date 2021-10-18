@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateLogDto } from './dto/create-log.dto';
 import { UpdateLogDto } from './dto/update-log.dto';
 import { Log } from './log.entity';
-import { LessThan } from 'typeorm';
+import { Between, LessThan } from 'typeorm';
 
 @Injectable()
 export class LogService {
@@ -10,6 +10,10 @@ export class LogService {
     const log = this.mount(createLogDto);
     const savedLog = await Log.save(log);
     return this.findLast(savedLog.macAddress);
+  }
+
+  async findAll(macAddress: string, initialDate: Date, finalDate: Date) {
+    return Log.find({ where: { createdAt: Between(initialDate, finalDate) } });
   }
 
   async findLast(macAddress: string) {
