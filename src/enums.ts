@@ -13,9 +13,9 @@ export enum PropertyAltEnum {
 }
 
 export enum TypeEnum {
-  video = 'video',
-  ebook = 'ebook',
-  exercise = 'exercise',
+  INTEGER = 'INTEGER',
+  FLOAT = 'FLOAT',
+  BOOLEAN = 'BOOLEAN'
 }
 
 export enum QuestionTypeEnum {
