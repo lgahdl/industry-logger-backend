@@ -15,6 +15,13 @@ export class DeviceService {
     return Device.find();
   }
 
+  findOneByMacAddress(macAddress: string) {
+    const options = {
+      where: { macAddress },
+    };
+    return Device.findOne(options);
+  }
+
   findOne(id: number) {
     return Device.findOne(id);
   }

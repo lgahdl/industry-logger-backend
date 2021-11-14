@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { TableService } from './table.service';
 import { CreateTableDto } from './dto/create-table.dto';
 import { UpdateTableDto } from './dto/update-table.dto';
@@ -12,9 +20,9 @@ export class TableController {
     return this.tableService.create(createTableDto);
   }
 
-  @Get()
-  findAll() {
-    return this.tableService.findAll();
+  @Get('/device/:id')
+  findByDeviceId(@Param('id') id: string) {
+    return this.tableService.findByIdDevice(+id);
   }
 
   @Get(':id')

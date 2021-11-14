@@ -2,11 +2,13 @@ import {
   BaseEntity,
   Column,
   CreateDateColumn,
+  Entity,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { TypeEnum } from '../enums';
 
+@Entity()
 export class TableField extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;

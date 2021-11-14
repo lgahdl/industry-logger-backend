@@ -7,11 +7,6 @@ import { UpdateDeviceDto } from './dto/update-device.dto';
 export class DeviceController {
   constructor(private readonly deviceService: DeviceService) {}
 
-  @Post()
-  create(@Body() createDeviceDto: CreateDeviceDto) {
-    return this.deviceService.create(createDeviceDto);
-  }
-
   @Get()
   findAll() {
     return this.deviceService.findAll();
@@ -20,6 +15,11 @@ export class DeviceController {
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.deviceService.findOne(+id);
+  }
+
+  @Post()
+  create(@Body() createDeviceDto: CreateDeviceDto) {
+    return this.deviceService.create(createDeviceDto);
   }
 
   @Patch(':id')

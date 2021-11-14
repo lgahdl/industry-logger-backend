@@ -13,8 +13,8 @@ export class TableFieldController {
   }
 
   @Get('/table/:idTable')
-  findByTableId(@Param('idTable') idTable: number) {
-    return this.tableFieldService.findByIdTable(idTable);
+  findByIdTable(@Param('idTable') idTable: string) {
+    return this.tableFieldService.findByIdTable(+idTable);
   }
 
   @Get(':id')

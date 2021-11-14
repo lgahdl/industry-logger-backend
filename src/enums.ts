@@ -15,7 +15,8 @@ export enum PropertyAltEnum {
 export enum TypeEnum {
   INTEGER = 'INTEGER',
   FLOAT = 'FLOAT',
-  BOOLEAN = 'BOOLEAN'
+  BOOLEAN = 'BOOLEAN',
+  ALARM = 'ALARM'
 }
 
 export enum QuestionTypeEnum {

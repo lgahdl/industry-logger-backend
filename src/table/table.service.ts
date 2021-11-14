@@ -11,8 +11,13 @@ export class TableService {
     return this.findOne(savedTable.id);
   }
 
-  findAll() {
-    return Table.find();
+  findByIdDevice(idDevice: number) {
+    const options = {
+      where: {
+        idDevice,
+      },
+    };
+    return Table.find(options);
   }
 
   findOne(id: number) {
