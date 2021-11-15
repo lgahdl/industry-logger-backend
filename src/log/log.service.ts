@@ -13,7 +13,10 @@ export class LogService {
   }
 
   async findAll(macAddress: string, initialDate: Date, finalDate: Date) {
-    return Log.find({ where: { createdAt: Between(initialDate, finalDate) }, order: { createdAt: 'DESC' } });
+    return Log.find({
+      where: { createdAt: Between(initialDate, finalDate), macAddress: macAddress.toLowerCase() },
+      order: { createdAt: 'DESC' },
+    });
   }
 
   async findLast(macAddress: string) {

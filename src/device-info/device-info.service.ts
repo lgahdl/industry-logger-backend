@@ -7,6 +7,7 @@ import { TableField } from '../table-field/table-field.entity';
 import { Log } from '../log/log.entity';
 import { TableFieldInfoDto } from './dto/table-field-info.dto';
 import Utils from '../helpers/utils';
+import { TableInfoDto } from './dto/table-info.dto';
 
 @Injectable()
 export class DeviceInfoService {
@@ -26,20 +27,24 @@ export class DeviceInfoService {
     const deviceDto: any = { ...device };
     const logs = await this.logService.findAll(
       macAddress,
-      initialDate,
-      finalDate,
+      new Date(initialDate),
+      new Date(finalDate),
     );
+    console.log(logs);
     const tables = await this.tableService.findByIdDevice(device.id);
-    const tableDtos = tables.map(async (table) => {
-      const tableFields = await this.tableFieldService.findByIdTable(table.id);
-      const tableFieldInfoDtos = tableFields.map((tableField) =>
-        this.getTableFieldInfoDto(tableField, logs),
-      );
-      const tableDto: any = { ...table };
-      tableDto.tableFields = tableFieldInfoDtos;
-      return tableDto;
-    });
-    deviceDto.tables = tableDtos;
+    deviceDto.tables = await Promise.all(
+      tables.map(async (table) => {
+        const tableFields = await this.tableFieldService.findByIdTable(
+          table.id,
+        );
+        const tableFieldInfoDtos = tableFields.map((tableField) =>
+          this.getTableFieldInfoDto(tableField, logs),
+        );
+        const tableDto: TableInfoDto = { ...table, tableFields: undefined };
+        tableDto.tableFields = tableFieldInfoDtos;
+        return tableDto;
+      }),
+    );
     return deviceDto;
   }
 
@@ -55,11 +60,14 @@ export class DeviceInfoService {
       let binaryValue;
       let realValue;
       if (tableField.type === 'INTEGER') {
+        console.log('v', value);
         binaryValue = value.substring(
           tableField.logDigit,
           tableField.logDigit + 16,
         );
+        console.log('b', binaryValue);
         realValue = parseInt(binaryValue, 2);
+        console.log('r', realValue);
         valuesDesc.push(realValue);
         valuesCreatedAt.push(createdAt);
       } else if (tableField.type === 'FLOAT') {
@@ -77,11 +85,14 @@ export class DeviceInfoService {
         valuesDesc.push(realValue);
         valuesCreatedAt.push(createdAt);
       } else if (tableField.type === 'BOOLEAN' || tableField.type === 'ALARM') {
-        binaryValue = value.substring(tableField.logDigit, 1);
+        binaryValue = value.substring(
+          tableField.logDigit,
+          tableField.logDigit + 1,
+        );
         realValue = binaryValue;
         valuesDesc.push(realValue);
         valuesCreatedAt.push(createdAt);
-        if (tableField.type === 'ALARM' && !!binaryValue) {
+        if (tableField.type === 'ALARM' && parseInt(binaryValue) === 1) {
           alarms.push(createdAt);
         }
       }

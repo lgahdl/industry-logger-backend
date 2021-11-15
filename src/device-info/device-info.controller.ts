@@ -1,15 +1,11 @@
-import {
-  Controller,
-  Get,
-  Param, Query,
-} from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { DeviceInfoService } from './device-info.service';
 
 @Controller('device-info')
 export class DeviceInfoController {
   constructor(private readonly deviceInfoService: DeviceInfoService) {}
 
-  @Get('/:macAddress')
+  @Get('/:macAddress/')
   findByMacAddress(@Param('macAddress') macAddress: string, @Query() query) {
     let { initialDate, finalDate } = query;
     if (!initialDate) {
@@ -18,6 +14,10 @@ export class DeviceInfoController {
     if (!finalDate) {
       finalDate = Date.now();
     }
-    return this.deviceInfoService.findByMacAddress(macAddress, initialDate, finalDate);
+    return this.deviceInfoService.findByMacAddress(
+      macAddress,
+      initialDate,
+      finalDate,
+    );
   }
 }

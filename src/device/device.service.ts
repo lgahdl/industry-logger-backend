@@ -17,7 +17,7 @@ export class DeviceService {
 
   findOneByMacAddress(macAddress: string) {
     const options = {
-      where: { macAddress },
+      where: { macAddress: macAddress.toLowerCase() },
     };
     return Device.findOne(options);
   }
@@ -41,7 +41,7 @@ export class DeviceService {
   private mount(dto: CreateDeviceDto | UpdateDeviceDto): Device {
     const device = new Device();
     device.name = dto?.name;
-    device.macAddress = dto?.macAddress;
+    device.macAddress = dto?.macAddress.toLowerCase();
     return device;
   }
 }
