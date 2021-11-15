@@ -45,6 +45,7 @@ export class DeviceInfoService {
         return tableDto;
       }),
     );
+    deviceDto.logs = logs;
     return deviceDto;
   }
 
