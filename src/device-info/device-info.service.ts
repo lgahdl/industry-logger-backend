@@ -30,7 +30,6 @@ export class DeviceInfoService {
       new Date(initialDate),
       new Date(finalDate),
     );
-    console.log(logs);
     const tables = await this.tableService.findByIdDevice(device.id);
     deviceDto.tables = await Promise.all(
       tables.map(async (table) => {
@@ -61,14 +60,11 @@ export class DeviceInfoService {
       let binaryValue;
       let realValue;
       if (tableField.type === 'INTEGER') {
-        console.log('v', value);
         binaryValue = value.substring(
           tableField.logDigit,
           tableField.logDigit + 16,
         );
-        console.log('b', binaryValue);
         realValue = parseInt(binaryValue, 2);
-        console.log('r', realValue);
         valuesDesc.push(realValue);
         valuesCreatedAt.push(createdAt);
       } else if (tableField.type === 'FLOAT') {

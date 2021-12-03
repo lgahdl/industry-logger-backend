@@ -27,7 +27,6 @@ export class LogService {
     const logs = await Log.find({
       where: { createdAt: LessThan(limitDate), macAddress },
     });
-    console.log(logs);
     await Log.remove(logs);
   }
 
